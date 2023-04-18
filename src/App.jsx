@@ -1,6 +1,6 @@
-import { EventList } from './components/EventList'
+import { EventList } from "./components/EventList"
 
-export var classNames = require('classnames')
+export var classNames = require("classnames")
 
 function App() {
   return (

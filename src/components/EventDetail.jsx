@@ -2,6 +2,8 @@ import { useState } from "react"
 import { ChevronDownIcon } from "@heroicons/react/24/outline"
 import { classNames } from "../App"
 
+
+
 export const EventDetail = ({ number, page, count, event }) => {
     const [displayDetails, setDisplayDetails] = useState(false)
 
@@ -10,6 +12,7 @@ export const EventDetail = ({ number, page, count, event }) => {
             <div
                 className={classNames(
                     "font-bold text-sm bg-teal-100 px-4 py-2  border-b border-b-teal-600 flex hover:bg-teal-200",
+                    "cursor-pointer",
                     displayDetails ? "rounded-t-lg" : "rounded-lg"
                 )}
                 onClick={() => {setDisplayDetails(!displayDetails)}}
