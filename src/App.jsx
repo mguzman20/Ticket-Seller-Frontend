@@ -1,4 +1,4 @@
-import { EventList } from './components/eventList'
+import { EventList } from './components/EventList'
 
 export var classNames = require('classnames')
 

@@ -2,14 +2,14 @@ import { useState } from "react"
 import { ChevronDownIcon } from "@heroicons/react/24/outline"
 import { classNames } from "../App"
 
-export function EventDetail({ number, page, count, event }) {
+export const EventDetail = ({ number, page, count, event }) => {
     const [displayDetails, setDisplayDetails] = useState(false)
 
     return (
         <div className="mb-2 shadow-lg rounded-lg flex-col">
             <div
                 className={classNames(
-                    "font-bold text-sm bg-teal-100 px-4 py-2  border-b border-b-teal-600 flex",
+                    "font-bold text-sm bg-teal-100 px-4 py-2  border-b border-b-teal-600 flex hover:bg-teal-200",
                     displayDetails ? "rounded-t-lg" : "rounded-lg"
                 )}
                 onClick={() => {setDisplayDetails(!displayDetails)}}
@@ -26,12 +26,12 @@ export function EventDetail({ number, page, count, event }) {
                 "text-xs bg-teal-50 px-4 py-2 rounded-b-lg font-mono",
                 displayDetails ? "flex-col" : "hidden"
             )}>
-                <div>fecha.......{event.date}</div>
-                <div>precio......${event.price}</div>
-                <div>cantidad....{event.quantity}</div>
-                <div>lugar.......{event.location}</div>
-                <div>latitud.....{event.latitude}</div>
-                <div>longuitud...{event.longitude}</div>
+                <div>Fecha.......{event.date}</div>
+                <div>Precio......${event.price}</div>
+                <div>Cantidad....{event.quantity}</div>
+                <div>Lugar.......{event.location}</div>
+                <div>Latitud.....{event.latitude}</div>
+                <div>Longuitud...{event.longitude}</div>
             </div>
         </div>
     )

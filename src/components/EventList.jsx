@@ -1,5 +1,5 @@
 import {useEffect, useState} from 'react'
-import { EventDetail } from "./eventDetail"
+import { EventDetail } from "./EventDetail"
 
 export const EventList = () => {
     const [events, setEvents] = useState([])
