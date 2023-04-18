@@ -1,30 +1,24 @@
-import {useEffect, useState} from 'react'
+import {useEffect, useState} from "react"
 import { EventDetail } from "./EventDetail"
+import { PageController } from "./PageController"
 
 export const EventList = () => {
     const [events, setEvents] = useState([])
-
-    const url = window.location
-    const params = new URL(url)
-    const page = params.searchParams.get("page") || 1
-    const count = params.searchParams.get("count") || 25
+    const [page, setPage] = useState(1)
+    const [count, setCount] = useState(25)
 
     useEffect(() => {
-        fetch(`/events/?page=${page}&count=${count}`, { method: 'GET', })
+        fetch(`/events/?page=${page}&count=${count}`, { method: "GET", })
         .then(response => response.json())
         .then(data => {setEvents(data)})
     }, [page, count])
 
     return (
-        <div className='mx-8 my-8 p-4 flex-row'>
-            <div className='text-xl py-1 mb-4 flex justify-center border-b-2 border-teal-700'>
+        <div className="mx-8 my-8 p-4 flex-row">
+            <div className="text-xl py-1 mb-4 flex justify-center border-b-2 border-teal-700">
                 LISTA DE EVENTOS EVENTS/CHILE
             </div>
-            {events[0] && (
-                <div className='p-2 font-semibold'>
-                Mostrando resultados del {(page - 1) * count + 1} al {(page) * count}
-                </div>
-            )}
+            <PageController page={page} count={count} setPage={setPage} setCount={setCount} />
             {events[0] ? (
                 events.map((event, number) => (
                     <div key={number}>
