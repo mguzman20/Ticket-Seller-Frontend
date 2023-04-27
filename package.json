@@ -2,7 +2,7 @@
   "name": "e1-frontend",
   "version": "0.1.0",
   "proxy": "http://localhost:8008/",
-  "homepage": ".",
+  "homepage": "./",
   "private": true,
   "dependencies": {
     "@heroicons/react": "^2.0.17",
