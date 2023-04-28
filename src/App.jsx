@@ -1,11 +1,12 @@
-import { EventList } from "./components/EventList"
+import { Account } from "./components/Account"
+import { MainPage } from "./pages"
 
-export var classNames = require("classnames")
-
-function App() {
-  return (
-    <EventList />
-  )
+const App = () => {
+    return (
+        <Account>
+            <MainPage />
+        </Account>
+    )
 }
 
 export default App

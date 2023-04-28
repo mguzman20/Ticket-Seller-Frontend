@@ -9,5 +9,5 @@ npm install
 luego correr el codigo en el puerto 3000
 
 ```
-npm start
+npm run start
 ```

@@ -10,8 +10,8 @@ export const PageController = ({ page, count, setPage, setCount }) => {
             </div>
             <button
                 className={classNames(
-                    "flex text-sm py-1 pr-2 pl-1  bg-blue-400 rounded-l-lg text-white  group border border-blue-800",
-                    page > 1 ? "hover:bg-blue-500 cursor-pointer" : "cursor-not-allowed"
+                    "flex text-sm py-1 pr-2 pl-1  bg-gray-700 rounded-l-lg text-white  group border border-gray-800",
+                    page > 1 ? "hover:bg-gray-800 cursor-pointer" : "cursor-not-allowed"
                 )}
                 onClick={() => {
                     if (page > 1) {
@@ -20,16 +20,21 @@ export const PageController = ({ page, count, setPage, setCount }) => {
                 }}
                 disabled={page <= 1}
             >
-                <PlayIcon className="w-5 h-5 mt-0.5 rotate-180 group-hover:scale-125 transition"/>
+                <PlayIcon
+                    className={classNames(
+                        "w-5 h-5 mt-0.5 rotate-180",
+                        page > 1 ? "group-hover:scale-125 transition" : ""
+                    )}
+                />
                 Anterior
             </button>
             <div
-                className="flex text-sm py-[5px] px-3  bg-blue-300 text-blue-800 cursor-pointe font-bold border-b border-t border-blue-800"
+                className="flex text-sm py-[5px] px-3  bg-gray-600 text-white cursor-pointe font-bold border-b border-t border-gray-800"
             >
                 {page}
             </div>
             <div
-                className="flex text-sm py-1 pl-2 pr-1  bg-blue-400 rounded-r-lg text-white cursor-pointer hover:bg-blue-500 group border border-blue-800"
+                className="flex text-sm py-1 pl-2 pr-1  bg-gray-700 rounded-r-lg text-white cursor-pointer hover:bg-gray-800 group border border-gray-800"
                 onClick={() => {setPage(page + 1)}}
                 aria-hidden
             >
