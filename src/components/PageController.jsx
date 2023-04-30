@@ -33,14 +33,13 @@ export const PageController = ({ page, count, setPage, setCount }) => {
             >
                 {page}
             </div>
-            <div
-                className="flex text-sm py-1 pl-2 pr-1  bg-gray-700 rounded-r-lg text-white cursor-pointer hover:bg-gray-800 group border border-gray-800"
+            <button
+                className="flex text-sm py-1 pl-2 pr-1  bg-gray-700 rounded-r-lg text-white hover:bg-gray-800 group border border-gray-800"
                 onClick={() => {setPage(page + 1)}}
-                aria-hidden
             >
                 Siguiente
                 <PlayIcon className="w-5 h-5 mt-0.5 group-hover:scale-125 transition"/>
-            </div>
+            </button>
         </div>
     )
 }

@@ -7,6 +7,7 @@ import { EventList } from "../components/EventList"
 
 export const MainPage = () => {
     const [status, setStatus] = useState(false)
+    const [email, setEmail] = useState()
     const { getSession, logout } = useContext(AccountContext)
     const [reload, setReload] = useState(false)
 
@@ -18,6 +19,8 @@ export const MainPage = () => {
     useEffect(() => {
         getSession()
             .then((session) => {
+                setStatus(true)
+                setEmail(session.idToken.payload.email)
                 console.log("Session:", session)
             })
             .catch((err) => console.error(err))
@@ -28,7 +31,7 @@ export const MainPage = () => {
             <div className="sticky top-0 z-50">
                 <Navbar status={status} endSesion={endSesion} reload={reload} setReload={setReload}/>
             </div>
-            {status ? <EventList /> : <LogingSubmitForm setStatus={setStatus}/>}
+            {status ? <EventList email={email}/> : <LogingSubmitForm setStatus={setStatus}/>}
         </div>
     )
 }

@@ -52,7 +52,7 @@ const Account = (props) => {
             user.signOut()
         }
     }
-    
+
     return (
         <AccountContext.Provider value={{ authenticate, getSession, logout}}>
             {props.children}

@@ -1,9 +1,10 @@
-import {useEffect, useState} from "react"
+import { useEffect, useState } from "react"
 import { ChevronDownIcon } from "@heroicons/react/24/outline"
 import { PageController } from "./PageController"
+import { BuyTickets } from "./BuyTickets"
 import classNames from "classnames"
 
-export const EventDetail = ({ number, page, count, event }) => {
+export const EventDetail = ({ number, page, count, event, email }) => {
     const [displayDetails, setDisplayDetails] = useState(false)
 
     return (
@@ -25,27 +26,43 @@ export const EventDetail = ({ number, page, count, event }) => {
                 </div>
             </div>
             <div className={classNames(
-                "text-xs bg-gray-300 px-4 py-2 rounded-b-lg font-mono",
-                displayDetails ? "flex-col" : "hidden"
+                "bg-gray-300 px-4 py-2 rounded-b-lg",
+                displayDetails ? "flex" : "hidden"
             )}>
-                <div>Fecha.......{event.date}</div>
-                <div>Precio......${event.price}</div>
-                <div>Cantidad....{event.quantity}</div>
-                <div>Lugar.......{event.location}</div>
-                <div>Latitud.....{event.latitude}</div>
-                <div>Longuitud...{event.longitude}</div>
+                <div className="flex">
+                    <div className="border border-gray-800 flex-col min-w-[60px] text-center text-xs">
+                        <p>Fecha</p>
+                        <p className="bg-gray-400">Precio</p>
+                        <p>Cantidad</p>
+                        <p className="bg-gray-400">Lugar</p>
+                        <p>Latitud</p>
+                        <p className="bg-gray-400">Longuitud</p>
+                    </div>
+                    <div className="border border-gray-800 border-l-0 flex-col min-w-[120px] text-xs">
+                        <p className="px-2">{event.date}</p>
+                        <p className="bg-gray-400 px-2">{event.price}</p>
+                        <p className="px-2">{event.quantity}</p>
+                        <p className="bg-gray-400 px-2">{event.location}</p>
+                        <p className="px-2">{event.latitude}</p>
+                        <p className="bg-gray-400 px-2">{event.longitude}</p>
+                    </div>
+                </div>
+                <BuyTickets event={event} email={email}/>
             </div>
         </div>
     )
 }
 
-export const EventList = () => {
+export const EventList = ({email}) => {
     const [events, setEvents] = useState([])
     const [page, setPage] = useState(1)
     const [count, setCount] = useState(25)
 
     useEffect(() => {
-        fetch(`${process.env.REACT_APP_BACKEND_HOST}/events/?page=${page}&count=${count}`, { method: "GET", })
+        fetch(
+            `${process.env.REACT_APP_BACKEND_HOST}/events/?page=${page}&count=${count}`,
+            { method: "GET" }
+        )
         .then(response => response.json())
         .then(data => {setEvents(data)})
     }, [page, count])
@@ -59,7 +76,7 @@ export const EventList = () => {
             {events[0] ? (
                 events.map((event, number) => (
                     <div key={number}>
-                        <EventDetail number={number} page={page} count={count} event={event} />
+                        <EventDetail number={number} page={page} count={count} event={event} email={email}/>
                     </div>
                 ))
             ) : (
