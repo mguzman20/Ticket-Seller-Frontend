@@ -8,6 +8,7 @@ import { EventList } from "../components/EventList"
 export const MainPage = () => {
     const [status, setStatus] = useState(false)
     const { getSession, logout } = useContext(AccountContext)
+    const [reload, setReload] = useState(false)
 
     const endSesion = () => {
         logout()
@@ -20,12 +21,12 @@ export const MainPage = () => {
                 console.log("Session:", session)
             })
             .catch((err) => console.error(err))
-    }, [getSession])
+    }, [getSession, reload])
 
     return (
         <div>
             <div className="sticky top-0 z-50">
-                <Navbar status={status} endSesion={endSesion}/>
+                <Navbar status={status} endSesion={endSesion} reload={reload} setReload={setReload}/>
             </div>
             {status ? <EventList /> : <LogingSubmitForm setStatus={setStatus}/>}
         </div>

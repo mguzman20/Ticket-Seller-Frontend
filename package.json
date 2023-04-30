@@ -1,7 +1,6 @@
 {
   "name": "e1-frontend",
   "version": "0.1.0",
-  "proxy": "http://localhost:8008/",
   "homepage": "./",
   "private": true,
   "dependencies": {
@@ -9,6 +8,7 @@
     "amazon-cognito-identity-js": "^6.2.0",
     "aws-amplify": "^5.1.3",
     "classnames": "^2.3.2",
+    "dotenv": "^16.0.3",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-scripts": "5.0.1"

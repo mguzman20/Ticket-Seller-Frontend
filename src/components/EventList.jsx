@@ -45,7 +45,7 @@ export const EventList = () => {
     const [count, setCount] = useState(25)
 
     useEffect(() => {
-        fetch(`https://www.arquie0.me/events/?page=${page}&count=${count}`, { method: "GET", })
+        fetch(`${process.env.REACT_APP_BACKEND_HOST}/events/?page=${page}&count=${count}`, { method: "GET", })
         .then(response => response.json())
         .then(data => {setEvents(data)})
     }, [page, count])
