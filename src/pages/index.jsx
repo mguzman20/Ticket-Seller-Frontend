@@ -3,6 +3,7 @@ import LogingSubmitForm from "../components/LogingSubmitForm"
 import { Navbar } from "../components/Navbar"
 import { AccountContext } from "../components/Account"
 import { EventList } from "../components/EventList"
+import { MyTickets } from "../components/MyTickets"
 
 
 export const MainPage = () => {
@@ -10,6 +11,7 @@ export const MainPage = () => {
     const [email, setEmail] = useState()
     const { getSession, logout } = useContext(AccountContext)
     const [reload, setReload] = useState(false)
+    const [isMyTickets, setIsMyTickets] = useState(false)
 
     const endSesion = () => {
         logout()
@@ -29,9 +31,17 @@ export const MainPage = () => {
     return (
         <div>
             <div className="sticky top-0 z-50">
-                <Navbar status={status} endSesion={endSesion} reload={reload} setReload={setReload}/>
+                <Navbar
+                    status={status}
+                    endSesion={endSesion}
+                    reload={reload}
+                    setReload={setReload}
+                    setIsMyTickets={setIsMyTickets}
+                />
             </div>
-            {status ? <EventList email={email}/> : <LogingSubmitForm setStatus={setStatus}/>}
+            {!status ? <LogingSubmitForm setStatus={setStatus}/> : null}
+            {status && !isMyTickets ? <EventList email={email}/> : null}
+            {status && isMyTickets ? <MyTickets email={email} isMyTickets={isMyTickets} /> : null}
         </div>
     )
 }
