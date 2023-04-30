@@ -3,19 +3,25 @@ import { EyeIcon, EyeSlashIcon } from "@heroicons/react/24/outline"
 import { AccountContext } from "./Account"
 import UserPool from "../UserPool"
 import classNames from "classnames"
+import { CognitoUser } from "amazon-cognito-identity-js"
 
 const LogingSubmitForm = ({setStatus}) => {
     const [islogingIn, setIsLogingIn] = useState(true)
+    const [name, setName] = useState("");
+    const [lastname, setLastname] = useState("");
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
     const [confirmPassword, setConfirmPassword] = useState("")
     const [isPasswordVisible, setIsPasswordVisible] = useState(false)
     const [error, setError] = useState(null)
     const [isWritingPassword, setIsWritingPassword] = useState(false)
+    const [emailVerification, setEmailVerification] = useState(false);
+    const [verificationCode, setVerificationCode] = useState("");
 
     const { authenticate } = useContext(AccountContext)
 
-    const onSubmit = (event) => {
+    //Funcion que solicita creacion de usuarios
+    const onSubmit = async (event) => {
         if (islogingIn) {
             event.preventDefault()
 
@@ -30,14 +36,20 @@ const LogingSubmitForm = ({setStatus}) => {
                 })
         } else {
             event.preventDefault()
+
+            const attributes = [
+                { Name: "name", Value: name },
+                { Name: "family_name", Value: lastname },
+            ];
+
             if (password === confirmPassword) {
-                UserPool.signUp(email, password, [], null, (err, data) => {
+                UserPool.signUp(email, password, attributes, null, (err, data) => {
                     if (err) {
                         console.log(err)
                         setError("La contraseña no cumple con los requisitos o email ya está en uso")
                     } else {
                         console.log(data)
-                        setStatus(true)
+                        setEmailVerification(true)
                     }
                 })
             } else {
@@ -46,8 +58,31 @@ const LogingSubmitForm = ({setStatus}) => {
         }
     }
 
+    //Función para validar usuario con codigo enviado al mail, usando Cognito
+    const handleVerificationSubmit = async (event) => {
+        event.preventDefault();
+
+        const user = new CognitoUser({
+            Username: email,
+            Pool: UserPool,
+        })
+
+        user.confirmRegistration(verificationCode, true, (err, data) => {
+            if (err) {
+                console.error(err);
+            } else {
+                console.log(data);
+                setEmailVerification(false);
+                setIsLogingIn(!islogingIn);
+                setStatus(true);
+            }
+        });
+    };
+
+
     return (
         <div className="flex mx-auto mt-4 max-w-md md:max-w-2xl rounded-lg bg-gray-200 p-6">
+            {!emailVerification && (
             <form onSubmit={onSubmit}  className="flex-col w-full">
                 <div className="flex justify-center text-lg border-b-2 pb-2 border-gray-800">
                     { islogingIn ? "Iniciar Sesión" : "Formulario Registro"}
@@ -55,6 +90,29 @@ const LogingSubmitForm = ({setStatus}) => {
                 <div className={classNames(error ? "flex justify-center mt-1 text-red-500" : "")}>
                     {error}
                 </div>
+                {!islogingIn && (
+                    <div className="flex-col mt-2">
+                        <label htmlFor="name">Nombre:</label>
+                        <input
+                            type="text"
+                            value={name}
+                            className="w-full rounded-md focus:outline-gray-800 px-2"
+                            onChange={(event) => setName(event.target.value)}
+                        />
+                    </div>
+                
+                )}
+                {!islogingIn && (
+                    <div className="flex-col mt-2">
+                        <label htmlFor="lastname">Apellido:</label>
+                        <input
+                            type="text"
+                            value={lastname}
+                            className="w-full rounded-md focus:outline-gray-800 px-2"
+                            onChange={(event) => setLastname(event.target.value)}
+                        />
+                    </div>
+                )}
                 <div className="flex-col mt-2">
                     <label htmlFor="email">Email:</label>
                     <input
@@ -138,6 +196,37 @@ const LogingSubmitForm = ({setStatus}) => {
                     </button>
                 </div>
             </form>
+            )}
+
+            {emailVerification && (
+                <form onSubmit={handleVerificationSubmit}  className="flex-col w-full">
+                    <div className="flex justify-center text-lg border-b-2 pb-2 border-gray-800">
+                        { islogingIn ? "Iniciar Sesión" : "Confirma tu Email"}
+                    </div>
+                    <div className={classNames(error ? "flex justify-center mt-1 text-red-500" : "")}>
+                        {error}
+                    </div>
+                    <div className="flex-col mt-2">
+                        <label htmlFor="verificationCode">Código de Verificación:</label>
+                        <input
+                            type="text"
+                            value={verificationCode}
+                            className="w-full rounded-md focus:outline-gray-800 px-2"
+                            onFocus={() => {setIsWritingPassword(true)}}
+                            onBlur={() => {setIsWritingPassword(false)}}
+                            onChange={(event) => setVerificationCode(event.target.value)}
+                        />
+                    </div>
+                    <div className={classNames(isWritingPassword ?  "flex" : "hidden", "text-xs text-gray-700 ml-4")}>
+                        {"Enviamos un código de verificación a tu correo electrónico"}
+                    </div>
+                    <button
+                        type="submit"
+                        className="flex mt-4 px-2 py-1 bg-gray-600 text-white rounded-lg">
+                        Confirmar
+                    </button>
+                </form>
+            )}
         </div>
     )
 }
