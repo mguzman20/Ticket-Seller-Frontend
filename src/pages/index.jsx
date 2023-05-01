@@ -8,7 +8,7 @@ import { MyTickets } from "../components/MyTickets"
 
 export const MainPage = () => {
     const [status, setStatus] = useState(false)
-    const [email, setEmail] = useState()
+    const [email, setEmail] = useState(false)
     const { getSession, logout } = useContext(AccountContext)
     const [reload, setReload] = useState(false)
     const [isMyTickets, setIsMyTickets] = useState(false)
@@ -26,7 +26,7 @@ export const MainPage = () => {
                 console.log("Session:", session)
             })
             .catch((err) => console.error(err))
-    }, [getSession, reload, email])
+    }, [getSession, reload, email, isMyTickets])
 
     return (
         <div>
