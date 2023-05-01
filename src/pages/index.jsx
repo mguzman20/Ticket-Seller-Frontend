@@ -24,7 +24,7 @@ export const MainPage = () => {
                 console.log("Session:", session)
             })
             .catch((err) => console.error(err))
-    }, [getSession, reload])
+    }, [getSession, reload, email])
 
     return (
         <div>
