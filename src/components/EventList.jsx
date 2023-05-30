@@ -2,6 +2,7 @@ import { useEffect, useState } from "react"
 import { ChevronDownIcon } from "@heroicons/react/24/outline"
 import { PageController } from "./PageController"
 import { BuyTickets } from "./BuyTickets"
+import { MoneyManager } from "./Money"
 import classNames from "classnames"
 
 export const EventDetail = ({ number, page, count, event, email }) => {
@@ -69,6 +70,7 @@ export const EventList = ({email}) => {
 
     return (
         <div className="mx-8 my-4 p-4 flex-row">
+            <MoneyManager email={email}/>
             <div className="text-xl py-1 mb-4 flex justify-center border-b-2 border-gray-800">
                 LISTA DE EVENTOS EVENTS/CHILE
             </div>

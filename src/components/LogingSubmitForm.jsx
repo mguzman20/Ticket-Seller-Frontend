@@ -50,6 +50,19 @@ const LogingSubmitForm = ({setStatus}) => {
                     } else {
                         console.log(data)
                         setEmailVerification(true)
+                        fetch(
+                            `${process.env.REACT_APP_BACKEND_HOST}/user/`,
+                            {
+                                method: "POST",
+                                headers: {
+                                    "Content-Type": "application/json"
+                                },
+                                body: JSON.stringify({
+                                    "user_id": email,
+                                    "money": 0,
+                                })
+                            }
+                        )
                     }
                 })
             } else {
@@ -100,7 +113,7 @@ const LogingSubmitForm = ({setStatus}) => {
                             onChange={(event) => setName(event.target.value)}
                         />
                     </div>
-                
+
                 )}
                 {!islogingIn && (
                     <div className="flex-col mt-2">
