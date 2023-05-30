@@ -23,11 +23,19 @@ export const BuyTickets = ({event, email}) => {
                     body: data
                 }
             )
-            alert(`Se compraron ${amountToBuy} tickets para ${event.name} con éxito!`)
+            .then(response => response.json())
+            .then(data => {
+                if (data.detail === "Not enough money") {
+                    alert("Dinero insuficiente para realzar esta transacción")
+                } else {
+                    alert(`Se compraron ${amountToBuy} tickets para ${event.name} con éxito!`)
+                }}
+            )
         } catch(err) {
             console.log(err)
         } finally {
             setBuying(false)
+
         }
     }
 
