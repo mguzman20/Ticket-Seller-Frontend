@@ -28,7 +28,9 @@ export const MyTickets = ({email, isMyTickets}) => {
                     <div key={number} className="mx-2 mb-2 rounded-lg flex-col px-4 bg-gray-700 text-white py-2">
                         <p>Id del evento: {event.event_id}</p>
                         <p>Cantidad: {event.quantity}</p>
-                        <p className={classNames(event.status === 1 ? "flex" : "hidden")}>Descarga: {event.link}</p>
+                        <p className={classNames(event.status === 1 ? "flex" : "hidden")}>
+                            <a href={event.link}>Descargar</a>
+                        </p>
                     </div>
                 ))
             ) : (
