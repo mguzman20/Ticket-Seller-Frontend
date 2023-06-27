@@ -1,11 +1,12 @@
 import { useEffect, useState } from "react"
 import { ChevronDownIcon } from "@heroicons/react/24/outline"
+import { w3cwebsocket } from 'websocket'
 import { PageController } from "./PageController"
 import { BuyTickets } from "./BuyTickets"
 import { MoneyManager } from "./Money"
 import classNames from "classnames"
 
-export const EventDetail = ({ number, page, count, event, email }) => {
+export const EventDetail = ({ number, page, count, event, email, socket }) => {
     const [displayDetails, setDisplayDetails] = useState(false)
 
     return (
@@ -48,7 +49,7 @@ export const EventDetail = ({ number, page, count, event, email }) => {
                         <p className="bg-gray-400 px-2">{event.longitude}</p>
                     </div>
                 </div>
-                <BuyTickets event={event} email={email}/>
+                <BuyTickets event={event} email={email} socket={socket} />
             </div>
         </div>
     )
@@ -58,6 +59,35 @@ export const EventList = ({email}) => {
     const [events, setEvents] = useState([])
     const [page, setPage] = useState(1)
     const [count, setCount] = useState(25)
+    const [socket, setSocket] = useState(null)
+
+    useEffect(() => {
+        const socket = new w3cwebsocket(`${process.env.REACT_APP_BACKEND_HOST_WS}/ws/sales`) //editar
+        setSocket(socket)
+
+        socket.onopen = () => {
+          console.log('Conexión establecida')
+        };
+
+        socket.onmessage = (message) => {
+            console.log('Mensaje recibido:', message.data)
+            const data = JSON.parse(message.data)
+            for (let i = 0; i < events.length; i++) {
+                if (events[i].id === data.id) {
+                    if (data.user_id === "admin") {
+                        events[i].quantity += data.quantity
+                    } else {
+                        events[i].quantity -= data.quantity
+                    }
+                    setEvents(events)  //setEvents([...events])
+                }
+            }
+        }
+
+        return () => {
+          socket.close();
+        }
+    }, [])
 
     useEffect(() => {
         fetch(
@@ -67,7 +97,6 @@ export const EventList = ({email}) => {
         .then(response => response.json())
         .then(data => {setEvents(data)})
     }, [page, count])
-
     return (
         <div className="mx-8 my-4 p-4 flex-row">
             <MoneyManager email={email}/>
@@ -78,7 +107,7 @@ export const EventList = ({email}) => {
             {events[0] ? (
                 events.map((event, number) => (
                     <div key={number}>
-                        <EventDetail number={number} page={page} count={count} event={event} email={email}/>
+                        <EventDetail number={number} page={page} count={count} event={event} email={email} socket={socket}/>
                     </div>
                 ))
             ) : (

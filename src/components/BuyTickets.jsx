@@ -2,7 +2,7 @@ import { useState } from "react"
 import classNames from "classnames"
 import { PlusIcon, MinusIcon } from "@heroicons/react/24/solid"
 
-export const BuyTickets = ({event, email}) => {
+export const BuyTickets = ({event, email, socket}) => {
     const [amountToBuy, setAmountToBuy] = useState(1)
     const [buying, setBuying] = useState(false)
 
@@ -31,6 +31,7 @@ export const BuyTickets = ({event, email}) => {
                     alert(`Se compraron ${amountToBuy} tickets para ${event.name} con éxito!`)
                 }}
             )
+            socket.send(data)
         } catch(err) {
             console.log(err)
         } finally {
