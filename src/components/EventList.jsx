@@ -73,13 +73,14 @@ export const EventList = ({email}) => {
             console.log('Mensaje recibido:', message.data)
             const data = JSON.parse(message.data)
             for (let i = 0; i < events.length; i++) {
-                if (events[i].id === data.id) {
+                if (events[i].id === data.event_id) {
                     if (data.user_id === "admin") {
                         events[i].quantity += data.quantity
                     } else {
                         events[i].quantity -= data.quantity
                     }
-                    setEvents(events)  //setEvents([...events])
+                    //setEvents(events)
+                    setEvents([...events])
                 }
             }
         }
