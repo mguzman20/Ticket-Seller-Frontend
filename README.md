@@ -1,6 +1,5 @@
-# e1-2023-1-grupo-20-frontend
+# Ticket Seller Frontend
 
-La documentación completa se puede encontrar en el [repositorio del backend](https://github.com/iic2173/e1-2023-1-grupo-20-backend)
 
 Primero instalar las dependencias:
 
